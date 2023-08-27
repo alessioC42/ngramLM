@@ -154,3 +154,6 @@ cython_debug/
 texts
 db.db
 text.txt
+*gram.db
+create.sh
+.vscode/settings.json
