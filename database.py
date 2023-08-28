@@ -1,7 +1,7 @@
 import sqlite3
 
 class Database:
-    def __init__(self, path, n, commit_interval=5000):
+    def __init__(self, path, n, random_query=False, commit_interval=5000):
         self.n = n
         self.filepath = path
         self.words_table_name = "words"
@@ -14,6 +14,7 @@ class Database:
 
         self.commit_counter = 0
         self.commit_interval = commit_interval
+        self.nextWordSearchType = ["count DESC LIMIT 1", "RANDOM() DESC LIMIT 1"][int(random_query)]
 
     def connect_to_database(self):
         self.connection = sqlite3.connect(self.filepath)
@@ -74,7 +75,7 @@ class Database:
 
         testString = ' AND '.join([f'word{i} = ? ' for i in range(1, self.n-1 + 1)])
 
-        self.cursor.execute(f"SELECT word{self.n} FROM {tableName} WHERE {testString} ORDER BY count DESC LIMIT 1", list(map(self.getWordId, lastnwords)))
+        self.cursor.execute(f"SELECT word{self.n} FROM {tableName} WHERE {testString} ORDER BY {self.nextWordSearchType}", list(map(self.getWordId, lastnwords)))
         return self.getWordById(self.cursor.fetchone()[0]);
 
     def query(self, words, n):
@@ -88,4 +89,3 @@ class Database:
                 return " ".join(wordorder)
             
         return " ".join(wordorder)
-

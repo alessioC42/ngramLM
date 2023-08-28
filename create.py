@@ -2,8 +2,8 @@ import database
 from string import punctuation
 from tqdm import tqdm
 
-DBPATH   = "2gram.db"
-N        = 2
+DBPATH   = "6gram.db"
+N        = 6
 
 DB = database.Database(DBPATH, N)
 
@@ -34,6 +34,7 @@ toremove = [
 ]
 
 print(f"{str(len(files))} files to process")
+print(f"N = {N}")
 for file in tqdm(files):
     with open(dir+"/"+file, "r") as text:
         text = text.read().lower()
