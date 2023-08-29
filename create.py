@@ -37,13 +37,16 @@ print(f"{str(len(files))} files to process")
 print(f"N = {N}")
 for file in tqdm(files):
     with open(dir+"/"+file, "r") as text:
-        text = text.read().lower()
+        text = text.read()
+
+        for substr in toremove:
+            text = text.replace(substr, " ")
+
+        text = text.lower()
 
         #remove punctation and \n
         text = text.translate(str.maketrans('', '', punctuation+"«»©"))
         text = text.replace("\n", " ")
-        for substr in toremove:
-            text = text.replace(substr, " ")
 
         #split in words
         words = text.split(" ")
