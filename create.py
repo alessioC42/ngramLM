@@ -1,6 +1,7 @@
 import database
 from string import punctuation
 from tqdm import tqdm
+from re import sub
 
 DBPATH   = "6gram.db"
 N        = 6
@@ -14,22 +15,8 @@ dir = "texts"
 files = os.listdir(dir)
 
 toremove = [
-    "<b>",
-    "</b>",
-    "<pre>",
-    "</pre>",
-    "<html>",
-    "</html>",
-    "<title>",
-    "</title>",
-    '<body bgcolor="#ffffff">',
-    "<body>",
-    "</body>",
-    "<script>",
-    "</script>",
     "if (window!= top)",
     "top.location.href=location.href",
-    "// -->",
     " b "
 ]
 
@@ -38,6 +25,8 @@ print(f"N = {N}")
 for file in tqdm(files):
     with open(dir+"/"+file, "r") as text:
         text = text.read()
+
+        text = sub(r'<.*?>', '', text)
 
         for substr in toremove:
             text = text.replace(substr, " ")
